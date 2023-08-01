@@ -1,20 +1,14 @@
+
 #game{
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 25%;
+    top: 25%;
     z-index: -1;
 }
 
 #hud{
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 25%;
+    top: 25%;
     z-index: 500;
-}
-
-#foreground {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 250;
 }
