@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Setting up canvas objects
 const canvas = document.querySelector('#game')
 const context = canvas.getContext('2d')
@@ -8,6 +9,7 @@ const hudContext = hudCanvas.getContext('2d')
 // initialising constants
 const healthBarHeight = 100
 const movementSpeed = 3
+// eslint-disable-next-line no-unused-vars
 const gravity = 0.2
 const canvasWidth = 1920
 const canvasHeight = 1080
@@ -19,177 +21,7 @@ context.fillRect(0, 0, canvas.width, canvas.height)
 hudCanvas.width = canvasWidth
 hudCanvas.height = canvasHeight
 
-// class for creating sprites in the game
-class Sprite {
-  constructor ({
-    position,
-    imageSource,
-    scale = 1,
-    width = 50,
-    height = 150,
-    frames = 1,
-    offset = { x: 0, y: 0 }
-  }) {
-    this.position = position
-    this.width = width
-    this.height = height
-    this.image = new Image()
-    this.image.src = imageSource
-    this.scale = scale
-    this.frames = frames
-    this.currentFrame = 0
-    this.lastFrameTime = 0
-    this.offset = offset
-  }
-
-  draw () {
-    const now = Date.now()
-    const timeSinceLastFrame = now - this.lastFrameTime
-    const frameDuration = 1000 / this.frames
-
-    if (timeSinceLastFrame >= frameDuration) {
-      this.currentFrame = (this.currentFrame + 1) % this.frames
-      this.lastFrameTime = now
-    }
-
-    const frameWidth = this.image.width / this.frames
-    const frameHeight = this.image.height
-    const frameX = this.currentFrame * frameWidth
-
-    context.drawImage(
-      this.image,
-      frameX,
-      0,
-      frameWidth,
-      frameHeight,
-      this.position.x - this.offset.x,
-      this.position.y - this.offset.y,
-      frameWidth * this.scale,
-      frameHeight * this.scale
-    )
-  }
-
-  update () {
-    this.draw()
-  }
-}
-
-class Player extends Sprite {
-  constructor ({ position, velocity, playerNumber, defaultFace, imageSource, scale, frames = 1, offset = { x: 0, y: 0 } }) {
-    super({ position, imageSource, scale, frames, offset })
-    this.position = position
-    this.velocity = velocity
-    this.height = 150
-    this.attackHitbox = {
-      position: this.position,
-      width: 100,
-      height: 50
-    }
-    this.secondaryHitbox = {
-      position: this.position,
-      width: 300,
-      height: 20
-    }
-    this.isSecondaryAttacking = false
-    this.isAttacking = false
-    this.isBusy = false
-    this.health = 100
-    this.playerNumber = playerNumber
-    this.lastPressedKey = ''
-    this.facing = defaultFace
-    this.image = new Image()
-    this.image.src = imageSource
-  }
-
-  // draw () {
-  //   context.fillStyle = 'red'
-  //   context.fillRect(this.position.x, this.position.y, 50, this.height)
-
-  //   if (this.isAttacking) {
-  //     context.fillStyle = 'yellow'
-  //     if (this.facing === 'left') {
-  //       context.fillRect(
-  //         this.attackHitbox.position.x,
-  //         this.attackHitbox.position.y,
-  //         this.attackHitbox.width * -1,
-  //         this.attackHitbox.height
-  //       )
-  //     } else if (this.facing === 'right') {
-  //       context.fillRect(
-  //         this.attackHitbox.position.x + 50,
-  //         this.attackHitbox.position.y,
-  //         this.attackHitbox.width,
-  //         this.attackHitbox.height
-  //       )
-  //     }
-  //   }
-
-  //   if (this.isSecondaryAttacking) {
-  //     context.fillStyle = 'blue'
-  //     context.fillRect(
-  //       this.secondaryHitbox.position.x,
-  //       this.secondaryHitbox.position.y,
-  //       this.secondaryHitbox.width,
-  //       this.secondaryHitbox.height
-  //     )
-  //   }
-  // }
-
-  // draw health bar based on player current health and update when player takes damage
-  drawHealthBar () {
-    hudContext.clearRect(0, 0, canvas.width, canvas.height)
-    hudContext.fillStyle = 'green'
-    switch (this.playerNumber) {
-      case 1:
-        hudContext.fillRect(0, 0, this.health * 8, healthBarHeight)
-        break
-
-      case 2:
-        hudContext.fillRect(canvas.width, 0, this.health * -8, healthBarHeight)
-        break
-    }
-  }
-
-  update () {
-    this.draw()
-
-    this.position.x += this.velocity.x
-    this.position.y += this.velocity.y
-
-    if (this.position.y + this.height + this.velocity.y >= canvas.height - 60) {
-      this.velocity.y = 0
-    } else {
-      this.velocity.y += gravity
-    }
-
-    if (this.isBusy) {
-      this.velocity.x = 0
-    }
-
-    if (this.lastPressedKey === 'a' || this.lastPressedKey === 'j') {
-      this.facing = 'left'
-    } else if (this.lastPressedKey === 'd' || this.lastPressedKey === 'l') {
-      this.facing = 'right'
-    }
-  }
-
-  attack () {
-    this.isAttacking = true
-    setTimeout(() => {
-      this.isAttacking = false
-    }, 100)
-  }
-
-  secondaryAttack () {
-    this.isSecondaryAttacking = true
-    this.isBusy = true
-    setTimeout(() => {
-      this.isSecondaryAttacking = false
-      this.isBusy = false
-    }, 300)
-  }
-}
-
+// object constructors
 const background = new Sprite({
   position: {
     x: 0,
@@ -198,7 +30,6 @@ const background = new Sprite({
   imageSource: './sprites/background.png',
   height: canvasHeight - 300
 })
-
 const foregroundTileset = new Sprite({
   position: {
     x: -30,
@@ -223,7 +54,6 @@ const foregroundTileset3 = new Sprite({
   scale: 3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
 })
-
 const foregroundTileset4 = new Sprite({
   position: {
     x: 1400,
@@ -231,6 +61,14 @@ const foregroundTileset4 = new Sprite({
   },
   scale: 3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
+})
+const cloud1 = new Sprite({
+  position: {
+    x: -200,
+    y: 0
+  },
+  scale: 3,
+  imageSource: './sprites/clouds/cloud_shape2_2.png'
 })
 
 // Creating player objects
@@ -249,7 +87,7 @@ const player = new Player({
   frames: 7,
   scale: 3,
   offset: {
-    x: 0,
+    x: 50,
     y: 300
   }
 })
@@ -272,8 +110,14 @@ const player2 = new Player({
     x: 0,
     y: 300
   }
-
 })
+
+function moveBackground (sprite, speed) {
+  sprite.position.x += speed
+  if (sprite.position.x > 2000) {
+    sprite.position.x = -1000
+  }
+}
 
 // Recurrent animate function to keep the game running
 function animate () {
@@ -281,6 +125,10 @@ function animate () {
   context.fillStyle = 'black'
   context.fillRect(0, 0, canvas.width, canvas.height)
   background.update()
+  cloud1.update()
+
+  moveBackground(cloud1, 0.2)
+
   foregroundTileset.draw()
   foregroundTileset3.draw()
   foregroundTileset2.draw()
