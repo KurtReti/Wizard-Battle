@@ -31,44 +31,48 @@ class Player extends Sprite {
     this.health = 100
     this.playerNumber = playerNumber
     this.lastPressedKey = ''
+    this.lastPressedArray = ['']
     this.facing = defaultFace
     this.image = new Image()
     this.image.src = imageSource
   }
 
-  // draw () {
-  //   context.fillStyle = 'red'
-  //   context.fillRect(this.position.x, this.position.y, 50, this.height)
+  checkAnimationStatus () {
+    if (this.playerNumber === 1) {
+      switch (this.lastPressedKey) {
+        case 'a':
+          this.frames = 8
+          this.image.src = './sprites/Fire vizard/Run.png'
+          player.velocity.x = -1 * movementSpeed
 
-  //   if (this.isAttacking) {
-  //     context.fillStyle = 'yellow'
-  //     if (this.facing === 'left') {
-  //       context.fillRect(
-  //         this.attackHitbox.position.x,
-  //         this.attackHitbox.position.y,
-  //         this.attackHitbox.width * -1,
-  //         this.attackHitbox.height
-  //       )
-  //     } else if (this.facing === 'right') {
-  //       context.fillRect(
-  //         this.attackHitbox.position.x + 50,
-  //         this.attackHitbox.position.y,
-  //         this.attackHitbox.width,
-  //         this.attackHitbox.height
-  //       )
-  //     }
-  //   }
-
-  //   if (this.isSecondaryAttacking) {
-  //     context.fillStyle = 'blue'
-  //     context.fillRect(
-  //       this.secondaryHitbox.position.x,
-  //       this.secondaryHitbox.position.y,
-  //       this.secondaryHitbox.width,
-  //       this.secondaryHitbox.height
-  //     )
-  //   }
-  // }
+          break
+        case 'd':
+          this.frames = 8
+          this.image.src = './sprites/Fire vizard/Run.png'
+          player.velocity.x = 1 * movementSpeed
+          break
+        case 'w':
+          this.frames = 9
+          this.image.src = './sprites/Fire vizard/Jump.png'
+          break
+        case 'e':
+          this.frames = 14
+          this.image.src = './sprites/Fire vizard/Flame_jet.png'
+          player.velocity.x = 0
+          break
+        case 'q':
+          this.frames = 4
+          this.image.src = './sprites/Fire vizard/Attack_2.png'
+          player.velocity.x = 0
+          break
+        case '':
+          this.image.src = '/sprites/Fire vizard/Idle.png'
+          this.frames = 7
+          player.velocity.x = 0
+          break
+      }
+    }
+  }
 
   // draw health bar based on player current health and update when player takes damage
   drawHealthBar () {
@@ -86,6 +90,10 @@ class Player extends Sprite {
   }
 
   update () {
+    const lastIndex = this.lastPressedArray.length
+    this.lastPressedKey = this.lastPressedArray[lastIndex - 1]
+    console.log(this.lastPressedKey)
+    this.checkAnimationStatus()
     this.draw()
 
     this.position.x += this.velocity.x
@@ -127,6 +135,6 @@ class Player extends Sprite {
     setTimeout(() => {
       this.isSecondaryAttacking = false
       this.isBusy = false
-    }, 300)
+    }, 400)
   }
 }

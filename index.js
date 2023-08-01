@@ -10,7 +10,7 @@ const hudContext = hudCanvas.getContext('2d')
 const healthBarHeight = 100
 const movementSpeed = 3
 // eslint-disable-next-line no-unused-vars
-const gravity = 0.2
+const gravity = 0.3
 const canvasWidth = 1920
 const canvasHeight = 1080
 
@@ -179,7 +179,7 @@ function initHUD (player1, player2) {
   hudContext.fillRect(canvas.width, 0, player2.health * -8, healthBarHeight)
 }
 
-// func
+// function to check win
 function checkWin () {
   if (player.health <= 0) {
     alert('player 2 wins')
@@ -198,23 +198,24 @@ window.addEventListener('keydown', (event) => {
   switch (event.key) {
     // player controls
     case 'd':
-      player.velocity.x = 1 * movementSpeed
-      player.lastPressedKey = 'd'
+      player.lastPressedArray.push('d')
       break
     case 'a':
-      player.velocity.x = -1 * movementSpeed
-      player.lastPressedKey = 'a'
+      player.lastPressedArray.push('a')
       break
     case 'q':
+      player.lastPressedArray.push('q')
       player.attack()
       break
     case 'e':
+      player.lastPressedArray.push('e')
       player.secondaryAttack()
       break
     case 'w':
+      player.lastPressedArray.push('w')
       // prevent player from double jumping
       if (player.velocity.y === 0) {
-        player.velocity.y = -10
+        player.velocity.y = -12
       }
       break
     // player2 controls
@@ -229,7 +230,7 @@ window.addEventListener('keydown', (event) => {
     case 'i':
       // prevent player from double jumping
       if (player2.velocity.y === 0) {
-        player2.velocity.y = -10
+        player2.velocity.y = -50
       }
       break
     case 'u':
@@ -244,10 +245,35 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
     case 'd':
-      player.velocity.x = 0
+      player.lastPressedArray = player.lastPressedArray.filter(
+        (val) => val !== 'd'
+      )
       break
     case 'a':
-      player.velocity.x = 0
+      player.lastPressedArray = player.lastPressedArray.filter(
+        (val) => val !== 'a'
+      )
+      break
+    case 'w':
+      setTimeout(function () {
+        player.lastPressedArray = player.lastPressedArray.filter(
+          (val) => val !== 'w'
+        )
+      }, 1000)
+      break
+    case 'q':
+      setTimeout(function () {
+        player.lastPressedArray = player.lastPressedArray.filter(
+          (val) => val !== 'q'
+        )
+      }, 400)
+      break
+    case 'e':
+      setTimeout(function () {
+        player.lastPressedArray = player.lastPressedArray.filter(
+          (val) => val !== 'e'
+        )
+      }, 400)
       break
     case 'j':
       player2.velocity.x = 0
