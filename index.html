@@ -5,12 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wizard Battle</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@600&display=swap");
+    </style>
   </head>
   <body>
-    <canvas id="game"></canvas>
-    <canvas id="hud"></canvas>
-    <canvas id="foreground"></canvas>
-
+    <h1 id="title">Wizard Battle</h1>
+    <div class="gameContainer">
+      <canvas id="game">
+      </canvas>
+      <canvas id="hud">
+      </canvas>
+      <div class="healthBar" id="player1"></div>
+      <div class="healthBar" id="player2"></div>
+    </div>
     <script src="sprite.js"></script>
     <script src="player.js"></script>
     <script src="index.js"></script>

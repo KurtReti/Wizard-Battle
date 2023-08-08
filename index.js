@@ -4,20 +4,19 @@ const canvas = document.querySelector('#game')
 const context = canvas.getContext('2d')
 
 const hudCanvas = document.querySelector('#hud')
-const hudContext = hudCanvas.getContext('2d')
+const hudContext = canvas.getContext('hud')
 
 // initialising constants
-const healthBarHeight = 100
 const movementSpeed = 3
 // eslint-disable-next-line no-unused-vars
 const gravity = 0.3
-const canvasWidth = 1920
-const canvasHeight = 1080
+const canvasWidth = 1280
+const canvasHeight = 720
 
 // defining canvas dimensions & filling the background with colour
 canvas.width = canvasWidth
 canvas.height = canvasHeight
-context.fillRect(0, 0, canvas.width, canvas.height)
+
 hudCanvas.width = canvasWidth
 hudCanvas.height = canvasHeight
 
@@ -25,41 +24,42 @@ hudCanvas.height = canvasHeight
 const background = new Sprite({
   position: {
     x: 0,
-    y: -200
+    y: -170
   },
   imageSource: './sprites/background.png',
+  scale: 0.6,
   height: canvasHeight - 300
 })
 const foregroundTileset = new Sprite({
   position: {
     x: -30,
-    y: canvasHeight - 150
+    y: canvasHeight - 120
   },
-  scale: 3,
+  scale: 1.3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
 })
 const foregroundTileset2 = new Sprite({
   position: {
     x: 340,
-    y: canvasHeight - 150
+    y: canvasHeight - 120
   },
-  scale: 3,
+  scale: 1.3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
 })
 const foregroundTileset3 = new Sprite({
   position: {
-    x: 900,
-    y: canvasHeight - 150
+    x: 700,
+    y: canvasHeight - 120
   },
-  scale: 3,
+  scale: 1.3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
 })
 const foregroundTileset4 = new Sprite({
   position: {
-    x: 1400,
-    y: canvasHeight - 150
+    x: 900,
+    y: canvasHeight - 120
   },
-  scale: 3,
+  scale: 1.3,
   imageSource: './sprites/tilemap/tilemap_new_softy_sand.png'
 })
 const cloud1 = new Sprite({
@@ -67,7 +67,7 @@ const cloud1 = new Sprite({
     x: -200,
     y: 0
   },
-  scale: 3,
+  scale: 1.2,
   imageSource: './sprites/clouds/cloud_shape2_2.png'
 })
 
@@ -85,16 +85,30 @@ const player = new Player({
   defaultFace: 'right',
   imageSource: './sprites/Fire vizard/Idle.png',
   frames: 7,
-  scale: 3,
+  scale: 1.5,
   offset: {
     x: 50,
-    y: 300
+    y: 100
+  },
+  sprites: {
+    idle: {
+      imageSource: './sprites/Fire vizard/Idle.png',
+      frames: 7
+    },
+    run: {
+      imageSource: './sprites/Fire vizard/Run.png',
+      frames: 8
+    },
+    attack: {
+      imageSource: './sprites/Fire vizard/Attack_1.png',
+      frames: 7
+    }
   }
 })
 
 const player2 = new Player({
   position: {
-    x: 1600,
+    x: 500,
     y: canvas.height - 200
   },
   velocity: {
@@ -103,12 +117,12 @@ const player2 = new Player({
   },
   playerNumber: 2,
   defaultFace: 'left',
-  imageSource: './sprites/Lightning Mage/Idle.png',
+  imageSource: './sprites/Lightning Mage/IdleLeft.png',
   frames: 7,
-  scale: 3,
+  scale: 1.5,
   offset: {
     x: 0,
-    y: 300
+    y: 100
   }
 })
 
@@ -121,13 +135,10 @@ function moveBackground (sprite, speed) {
 
 // Recurrent animate function to keep the game running
 function animate () {
-  window.requestAnimationFrame(animate)
-  context.fillStyle = 'black'
-  context.fillRect(0, 0, canvas.width, canvas.height)
   background.update()
   cloud1.update()
 
-  moveBackground(cloud1, 0.2)
+  moveBackground(cloud1, 0.1)
 
   foregroundTileset.draw()
   foregroundTileset3.draw()
@@ -136,12 +147,12 @@ function animate () {
 
   player.update()
   player2.update()
-  initHUD(player, player2)
   checkWin()
 
   // collision detection for attack
   collisionDetection(player, player2)
   collisionDetection(player2, player)
+  window.requestAnimationFrame(animate)
 }
 
 // Function to check if a hitbox is colliding with the opposing player
@@ -155,7 +166,6 @@ function collisionDetection (player, player2) {
     console.log('hit')
     player.isAttacking = false
     player2.health -= 10
-    player.drawHealthBar()
   }
 
   // collision detection for secondaryattack
@@ -168,15 +178,7 @@ function collisionDetection (player, player2) {
     console.log('secondary hit')
     player.isSecondaryAttacking = false
     player2.health -= 20
-    player.drawHealthBar()
   }
-}
-
-// function to initialize the health bar
-function initHUD (player1, player2) {
-  hudContext.fillStyle = 'green'
-  hudContext.fillRect(0, 0, player1.health * 8, healthBarHeight)
-  hudContext.fillRect(canvas.width, 0, player2.health * -8, healthBarHeight)
 }
 
 // function to check win
@@ -259,7 +261,7 @@ window.addEventListener('keyup', (event) => {
         player.lastPressedArray = player.lastPressedArray.filter(
           (val) => val !== 'w'
         )
-      }, 1000)
+      }, 620)
       break
     case 'q':
       setTimeout(function () {
@@ -273,7 +275,7 @@ window.addEventListener('keyup', (event) => {
         player.lastPressedArray = player.lastPressedArray.filter(
           (val) => val !== 'e'
         )
-      }, 400)
+      }, 750)
       break
     case 'j':
       player2.velocity.x = 0
@@ -285,5 +287,3 @@ window.addEventListener('keyup', (event) => {
 })
 
 animate()
-initHUD(player, player2)
-console.log(foregroundTileset.image.width)

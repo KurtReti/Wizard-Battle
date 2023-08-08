@@ -1,14 +1,54 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(40, 28, 47);
+}
+
+#title {
+    font-size: 60px;
+    font-family: 'El Messiri', sans-serif;
+    margin: 0;
+    color: goldenrod;
+}
+
+.gameContainer{
+    width: 1280;
+    height: 720;
+    position: relative;
+}
 
 #game{
-    position: absolute;
-    left: 25%;
-    top: 25%;
+    width: 1280;
+    height: 720;
     z-index: -1;
 }
 
 #hud{
     position: absolute;
-    left: 25%;
-    top: 25%;
-    z-index: 500;
+    top: 0%;
+    left: 0%;
+    width: 1280;
+    height: 720;
+    z-index: 10;
+}
+
+.healthBar{
+    height: 50px;
+    position: absolute;
+    background-color: red;
+    transition-property: width;
+    transition-duration: 0.5s;
+    z-index: 100;
+}
+
+#player1{
+    top: 0%;
+    left: 0%;
+}
+
+#player2{
+    top: 0%;
+    right: 0%;
 }

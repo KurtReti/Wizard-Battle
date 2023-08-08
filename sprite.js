@@ -47,6 +47,29 @@ class Sprite {
       frameWidth * this.scale,
       frameHeight * this.scale
     )
+
+    // draw () {
+    //   context.fillStyle = 'red'
+    //   context.fillRect(this.position.x, this.position.y, 50, this.height)
+
+    //   if (this.isAttacking) {
+    //     context.fillStyle = 'yellow'
+    //     if (this.facing === 'left') {
+    //       context.fillRect(
+    //         this.attackHitbox.position.x,
+    //         this.attackHitbox.position.y,
+    //         this.attackHitbox.width * -1,
+    //         this.attackHitbox.height
+    //       )
+    //     } else if (this.facing === 'right') {
+    //       context.fillRect(
+    //         this.attackHitbox.position.x + 50,
+    //         this.attackHitbox.position.y,
+    //         this.attackHitbox.width,
+    //         this.attackHitbox.height
+    //       )
+    //     }
+    //   }
   }
 
   update () {

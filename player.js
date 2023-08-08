@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+
 class Player extends Sprite {
   constructor ({
     position,
@@ -9,7 +10,8 @@ class Player extends Sprite {
     imageSource,
     scale,
     frames = 1,
-    offset = { x: 0, y: 0 }
+    offset = { x: 0, y: 0 },
+    sprites
   }) {
     super({ position, imageSource, scale, frames, offset })
     this.position = position
@@ -32,9 +34,26 @@ class Player extends Sprite {
     this.playerNumber = playerNumber
     this.lastPressedKey = ''
     this.lastPressedArray = ['']
-    this.facing = defaultFace
     this.image = new Image()
     this.image.src = imageSource
+    this.sprites = sprites
+
+    for (const sprite in sprites) {
+      sprites[sprite].image = new Image()
+      sprites[sprite].image.src = sprites[sprite].imageSource
+    }
+  }
+
+  updateHealthBar () {
+    if (this.playerNumber === 1) {
+      const healthBar1 = document.querySelector('#player1')
+      const healthString = player.health * 5 + 'px'
+      healthBar1.style.width = healthString
+    } else if (this.playerNumber === 2) {
+      const healthBar1 = document.querySelector('#player2')
+      const healthString = player2.health * 5 + 'px'
+      healthBar1.style.width = healthString
+    }
   }
 
   checkAnimationStatus () {
@@ -44,7 +63,6 @@ class Player extends Sprite {
           this.frames = 8
           this.image.src = './sprites/Fire vizard/Run.png'
           player.velocity.x = -1 * movementSpeed
-
           break
         case 'd':
           this.frames = 8
@@ -74,26 +92,11 @@ class Player extends Sprite {
     }
   }
 
-  // draw health bar based on player current health and update when player takes damage
-  drawHealthBar () {
-    hudContext.clearRect(0, 0, canvas.width, canvas.height)
-    hudContext.fillStyle = 'green'
-    switch (this.playerNumber) {
-      case 1:
-        hudContext.fillRect(0, 0, this.health * 8, healthBarHeight)
-        break
-
-      case 2:
-        hudContext.fillRect(canvas.width, 0, this.health * -8, healthBarHeight)
-        break
-    }
-  }
-
   update () {
     const lastIndex = this.lastPressedArray.length
     this.lastPressedKey = this.lastPressedArray[lastIndex - 1]
-    console.log(this.lastPressedKey)
     this.checkAnimationStatus()
+    this.updateHealthBar()
     this.draw()
 
     this.position.x += this.velocity.x
@@ -113,12 +116,6 @@ class Player extends Sprite {
 
     if (this.isBusy) {
       this.velocity.x = 0
-    }
-
-    if (this.lastPressedKey === 'a' || this.lastPressedKey === 'j') {
-      this.facing = 'left'
-    } else if (this.lastPressedKey === 'd' || this.lastPressedKey === 'l') {
-      this.facing = 'right'
     }
   }
 
