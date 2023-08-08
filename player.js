@@ -47,11 +47,11 @@ class Player extends Sprite {
   updateHealthBar () {
     if (this.playerNumber === 1) {
       const healthBar1 = document.querySelector('#player1')
-      const healthString = player.health * 5 + 'px'
+      const healthString = player.health * 2.2 + 'px'
       healthBar1.style.width = healthString
     } else if (this.playerNumber === 2) {
       const healthBar1 = document.querySelector('#player2')
-      const healthString = player2.health * 5 + 'px'
+      const healthString = player2.health * 2.2 + 'px'
       healthBar1.style.width = healthString
     }
   }

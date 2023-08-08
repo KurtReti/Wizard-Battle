@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 // Setting up canvas objects
 const canvas = document.querySelector('#game')
 const context = canvas.getContext('2d')
 
 const hudCanvas = document.querySelector('#hud')
-const hudContext = canvas.getContext('hud')
+const hudContext = hudCanvas.getContext('2d')
 
 // initialising constants
 const movementSpeed = 3
@@ -13,12 +14,22 @@ const gravity = 0.3
 const canvasWidth = 1280
 const canvasHeight = 720
 
+const player1SpawnPosition = 0
+const player2SpawnPosition = 1100
+
 // defining canvas dimensions & filling the background with colour
 canvas.width = canvasWidth
 canvas.height = canvasHeight
 
 hudCanvas.width = canvasWidth
 hudCanvas.height = canvasHeight
+
+const rematchUI = document.querySelector('.rematch')
+const rematchButton = document.querySelector('.rematchButton')
+rematchButton.addEventListener('click', () => {
+  rematchUI.style.display = 'none'
+  startNewGame()
+})
 
 // object constructors
 const background = new Sprite({
@@ -71,10 +82,28 @@ const cloud1 = new Sprite({
   imageSource: './sprites/clouds/cloud_shape2_2.png'
 })
 
+const healthBar1 = new Sprite({
+  position: {
+    x: 0,
+    y: 0
+  },
+  scale: 0.15,
+  imageSource: './sprites/healthbarfinal.png'
+})
+
+const healthBar2 = new Sprite({
+  position: {
+    x: 937,
+    y: 0
+  },
+  scale: 0.15,
+  imageSource: './sprites/healthbarfinalflip.png'
+})
+
 // Creating player objects
 const player = new Player({
   position: {
-    x: 0,
+    x: player1SpawnPosition,
     y: canvas.height - 200
   },
   velocity: {
@@ -108,7 +137,7 @@ const player = new Player({
 
 const player2 = new Player({
   position: {
-    x: 500,
+    x: player2SpawnPosition,
     y: canvas.height - 200
   },
   velocity: {
@@ -148,6 +177,8 @@ function animate () {
   player.update()
   player2.update()
   checkWin()
+  healthBar1.drawToHud()
+  healthBar2.drawToHud()
 
   // collision detection for attack
   collisionDetection(player, player2)
@@ -177,22 +208,33 @@ function collisionDetection (player, player2) {
   ) {
     console.log('secondary hit')
     player.isSecondaryAttacking = false
-    player2.health -= 20
+    player2.health -= 30
   }
 }
 
 // function to check win
 function checkWin () {
   if (player.health <= 0) {
-    alert('player 2 wins')
-    player.health = 100
-    player2.health = 100
+    player.health = 0
+    player.update()
+    rematch()
   }
   if (player2.health <= 0) {
-    alert('player 1 wins')
-    player.health = 100
-    player2.health = 100
+    player2.health = 0
+    player2.update()
+    rematch()
   }
+}
+
+function rematch () {
+  rematchUI.style.display = 'flex'
+}
+
+function startNewGame () {
+  player.health = 100
+  player2.health = 100
+  player.position.x = player1SpawnPosition
+  player2.position.x = player2SpawnPosition
 }
 
 // event listeners / controls
