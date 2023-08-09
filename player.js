@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
+// init sounds
+const fireSFX = new Sound('./sfx/04_Fire_explosion_04_medium.wav', 0.5)
+
 class Player extends Sprite {
   constructor ({
     position,
@@ -37,6 +40,7 @@ class Player extends Sprite {
     this.image = new Image()
     this.image.src = imageSource
     this.sprites = sprites
+    this.abilityCooldown = 0
 
     for (const sprite in sprites) {
       sprites[sprite].image = new Image()
@@ -77,6 +81,7 @@ class Player extends Sprite {
           this.frames = 14
           this.image.src = './sprites/Fire vizard/Flame_jet.png'
           player.velocity.x = 0
+          fireSFX.play()
           break
         case 'q':
           this.frames = 4
@@ -120,18 +125,36 @@ class Player extends Sprite {
   }
 
   attack () {
-    this.isAttacking = true
+    this.isBusy = true
     setTimeout(() => {
-      this.isAttacking = false
-    }, 100)
+      console.log('hey')
+      this.isBusy = false
+    }, 1000)
+  }
+
+  startCooldown () {
+    this.abilityCooldown = 5
+
+    const intervalId = setInterval(() => {
+      this.abilityCooldown--
+      if (this.abilityCooldown < 0) {
+        this.abilityCooldown = 0
+      }
+      console.log(this.abilityCooldown)
+
+      if (this.abilityCooldown === 0) {
+        clearInterval(intervalId)
+      }
+    }, 1000)
   }
 
   secondaryAttack () {
-    this.isSecondaryAttacking = true
     this.isBusy = true
     setTimeout(() => {
-      this.isSecondaryAttacking = false
+      console.log('hey')
       this.isBusy = false
-    }, 400)
+    }, 1000)
+
+    this.startCooldown()
   }
 }

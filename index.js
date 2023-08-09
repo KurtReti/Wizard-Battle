@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 // Setting up canvas objects
 const canvas = document.querySelector('#game')
-const context = canvas.getContext('2d')
+const context = canvas.getContext('2d', { willReadFrequently: true })
 
 const hudCanvas = document.querySelector('#hud')
 const hudContext = hudCanvas.getContext('2d')
@@ -23,6 +23,12 @@ canvas.height = canvasHeight
 
 hudCanvas.width = canvasWidth
 hudCanvas.height = canvasHeight
+
+const bgMusic = new Sound(
+  './sfx/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3',
+  0.1,
+  (loop = true)
+)
 
 const rematchUI = document.querySelector('.rematch')
 const rematchButton = document.querySelector('.rematchButton')
@@ -235,54 +241,62 @@ function startNewGame () {
   player2.health = 100
   player.position.x = player1SpawnPosition
   player2.position.x = player2SpawnPosition
+  bgMusic.play()
 }
 
 // event listeners / controls
 window.addEventListener('keydown', (event) => {
-  switch (event.key) {
-    // player controls
-    case 'd':
-      player.lastPressedArray.push('d')
-      break
-    case 'a':
-      player.lastPressedArray.push('a')
-      break
-    case 'q':
-      player.lastPressedArray.push('q')
-      player.attack()
-      break
-    case 'e':
-      player.lastPressedArray.push('e')
-      player.secondaryAttack()
-      break
-    case 'w':
-      player.lastPressedArray.push('w')
-      // prevent player from double jumping
-      if (player.velocity.y === 0) {
-        player.velocity.y = -12
-      }
-      break
-    // player2 controls
-    case 'j':
-      player2.velocity.x = -1 * movementSpeed
-      player2.lastPressedKey = 'j'
-      break
-    case 'l':
-      player2.velocity.x = 1 * movementSpeed
-      player2.lastPressedKey = 'l'
-      break
-    case 'i':
-      // prevent player from double jumping
-      if (player2.velocity.y === 0) {
-        player2.velocity.y = -50
-      }
-      break
-    case 'u':
-      player2.attack()
-      break
-    case 'o':
-      player2.secondaryAttack()
-      break
+  if (player.isBusy === false) {
+    switch (event.key) {
+      // player controls
+      case 'd':
+        player.lastPressedArray.push('d')
+        break
+      case 'a':
+        player.lastPressedArray.push('a')
+        break
+      case 'q':
+        player.currentFrame = 0
+        player.lastPressedArray.push('q')
+        player.attack()
+        break
+      case 'e':
+        if (player.abilityCooldown === 0) {
+          player.currentFrame = 0
+          player.lastPressedArray.push('e')
+          player.secondaryAttack()
+          break
+        }
+        break
+      case 'w':
+        player.lastPressedArray.push('w')
+        // prevent player from double jumping
+        if (player.velocity.y === 0) {
+          player.velocity.y = -12
+        }
+        break
+      // player2 controls
+      case 'j':
+        player2.velocity.x = -1 * movementSpeed
+        player2.lastPressedKey = 'j'
+        break
+      case 'l':
+        player2.velocity.x = 1 * movementSpeed
+        player2.lastPressedKey = 'l'
+        break
+      case 'i':
+        // prevent player from double jumping
+        if (player2.velocity.y === 0) {
+          player2.velocity.y = -12
+        }
+        break
+      case 'u':
+        player2.attack()
+        break
+      case 'o':
+        player2.secondaryAttack()
+        break
+    }
   }
 })
 
@@ -303,21 +317,22 @@ window.addEventListener('keyup', (event) => {
         player.lastPressedArray = player.lastPressedArray.filter(
           (val) => val !== 'w'
         )
-      }, 620)
+      }, 500)
       break
     case 'q':
       setTimeout(function () {
         player.lastPressedArray = player.lastPressedArray.filter(
           (val) => val !== 'q'
         )
-      }, 400)
+      }, 1000)
+
       break
     case 'e':
       setTimeout(function () {
         player.lastPressedArray = player.lastPressedArray.filter(
           (val) => val !== 'e'
         )
-      }, 750)
+      }, 1000)
       break
     case 'j':
       player2.velocity.x = 0
