@@ -3,6 +3,9 @@
 
 // init sounds
 const fireSFX = new Sound('./sfx/04_Fire_explosion_04_medium.wav', 0.5)
+const attackSFX = new Sound('./sfx/07_human_atk_sword_1.wav', 0.5)
+const jumpSFX = new Sound('./sfx/12_human_jump_2.wav', 0.4)
+const manaSFX = new Sound('./sfx/08_human_charge_1.wav', 0.35)
 
 class Player extends Sprite {
   constructor ({
@@ -50,15 +53,16 @@ class Player extends Sprite {
 
   updateHealthBar () {
     if (this.playerNumber === 1) {
-      const healthBar1 = document.querySelector('#player1')
+      const healthBar = document.querySelector('#player1')
       const healthString = player.health * 2.2 + 'px'
-      healthBar1.style.width = healthString
+      healthBar.style.width = healthString
     } else if (this.playerNumber === 2) {
-      const healthBar1 = document.querySelector('#player2')
+      const healthBar = document.querySelector('#player2')
       const healthString = player2.health * 2.2 + 'px'
-      healthBar1.style.width = healthString
+      healthBar.style.width = healthString
     }
   }
+
 
   checkAnimationStatus () {
     if (this.playerNumber === 1) {
@@ -76,6 +80,7 @@ class Player extends Sprite {
         case 'w':
           this.frames = 9
           this.image.src = './sprites/Fire vizard/Jump.png'
+          jumpSFX.play()
           break
         case 'e':
           this.frames = 14
@@ -87,6 +92,7 @@ class Player extends Sprite {
           this.frames = 4
           this.image.src = './sprites/Fire vizard/Attack_2.png'
           player.velocity.x = 0
+          attackSFX.play()
           break
         case '':
           this.image.src = '/sprites/Fire vizard/Idle.png'
@@ -133,7 +139,7 @@ class Player extends Sprite {
   }
 
   startCooldown () {
-    this.abilityCooldown = 5
+    this.abilityCooldown = 50
 
     const intervalId = setInterval(() => {
       this.abilityCooldown--
@@ -143,9 +149,10 @@ class Player extends Sprite {
       console.log(this.abilityCooldown)
 
       if (this.abilityCooldown === 0) {
+        manaSFX.play()
         clearInterval(intervalId)
       }
-    }, 1000)
+    }, 100)
   }
 
   secondaryAttack () {
