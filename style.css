@@ -91,6 +91,24 @@ body {
   z-index: 5;
 }
 
+
+.muteButton {
+  top: 6%;
+  left: 70%;
+  height: 30px;
+  position: absolute;
+  transition-property: width;
+  transition-duration: 0.5s;
+  z-index: 100;
+  scale: 1.5;
+}
+
+.muteButton:hover {
+  cursor: pointer;
+  scale: 1.7;
+}
+
+
 #player1 {
   top: 5.58%;
   background: rgb(203, 69, 94);

@@ -8,7 +8,6 @@ class Sound {
     this.sound.volume = volume
     this.sound.loop = loop
     this.sound.muted = false
-    this.muted = false
     document.body.appendChild(this.sound)
     this.play = function () {
       this.sound.play()

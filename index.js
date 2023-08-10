@@ -32,9 +32,21 @@ const bgMusic = new Sound(
 
 const rematchUI = document.querySelector('.rematch')
 const rematchButton = document.querySelector('.rematchButton')
+const muteButton = document.querySelector('.muteButton')
+
 rematchButton.addEventListener('click', () => {
   rematchUI.style.display = 'none'
   startNewGame()
+})
+
+// event listener for HUD
+muteButton.addEventListener('click', () => {
+  bgMusic.toggleMute()
+  if (bgMusic.sound.muted) {
+    muteButton.src = './sprites/Mute Button muted1.png'
+  } else {
+    muteButton.src = './sprites/Mute Button unmuted1.png'
+  }
 })
 
 // object constructors
