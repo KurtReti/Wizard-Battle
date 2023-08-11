@@ -63,7 +63,6 @@ class Player extends Sprite {
     }
   }
 
-
   checkAnimationStatus () {
     if (this.playerNumber === 1) {
       switch (this.lastPressedKey) {

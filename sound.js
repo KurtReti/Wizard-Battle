@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 class Sound {
   constructor (src, volume, loop = false) {
     this.sound = document.createElement('audio')

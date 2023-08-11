@@ -1,26 +1,24 @@
 /* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 /* eslint-disable no-undef */
 // Setting up canvas objects
+
 const canvas = document.querySelector('#game')
 const context = canvas.getContext('2d', { willReadFrequently: true })
-
 const hudCanvas = document.querySelector('#hud')
 const hudContext = hudCanvas.getContext('2d')
 
 // initialising constants
 const movementSpeed = 3
-// eslint-disable-next-line no-unused-vars
 const gravity = 0.3
 const canvasWidth = 1280
 const canvasHeight = 720
-
 const player1SpawnPosition = 0
 const player2SpawnPosition = 1100
 
 // defining canvas dimensions & filling the background with colour
 canvas.width = canvasWidth
 canvas.height = canvasHeight
-
 hudCanvas.width = canvasWidth
 hudCanvas.height = canvasHeight
 
@@ -30,6 +28,7 @@ const bgMusic = new Sound(
   (loop = true)
 )
 
+// initialising variables for hud
 const rematchUI = document.querySelector('.rematch')
 const rematchButton = document.querySelector('#rematchButton')
 const muteButton = document.querySelector('.muteButton')
@@ -292,6 +291,7 @@ window.addEventListener('keydown', (event) => {
         }
         break
       case 'w':
+        player.currentFrame = 0
         player.lastPressedArray.push('w')
         // prevent player from double jumping
         if (player.velocity.y === 0) {
