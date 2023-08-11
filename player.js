@@ -94,7 +94,7 @@ class Player extends Sprite {
           attackSFX.play()
           break
         case '':
-          this.image.src = '/sprites/Fire vizard/Idle.png'
+          this.image.src = './sprites/Fire vizard/Idle.png'
           this.frames = 7
           player.velocity.x = 0
           break
