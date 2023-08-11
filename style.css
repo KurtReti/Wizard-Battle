@@ -62,7 +62,7 @@ body {
 
 }
 
-.rematchButton {
+.button {
   background-color: goldenrod;
   width: 100px;
   height: 50px;
@@ -78,7 +78,7 @@ body {
 
 }
 
-.rematchButton:hover{
+.button:hover{
   cursor: pointer;
   scale: 0.95;
 }
@@ -131,4 +131,36 @@ body {
   right: 7.8%;
 }
 
+.startGame {
+  background-color: #AC775E;
+  border: 2px solid goldenrod;
+  width: 400px;
+  height: 75px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+  inset rgb(248, 191, 46) 0 0 0 3px,
+  inset goldenrod 0 0 0 4px;
 
+}
+
+.startButton {
+  background-color: goldenrod;
+  width: 100px;
+  height: 50px;
+  font-size: 25px;
+  border: 1px solid goldenrod;
+  border-radius: 0;
+  font-family: "VT323", monospace;
+  color: rgb(125, 92, 11);
+  z-index: 100;
+  box-shadow:
+  inset rgb(248, 191, 46) 0 0 0 2px,
+  inset goldenrod 0 0 0 1px;
+
+}

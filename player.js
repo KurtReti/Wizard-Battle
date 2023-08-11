@@ -35,7 +35,7 @@ class Player extends Sprite {
     }
     this.isSecondaryAttacking = false
     this.isAttacking = false
-    this.isBusy = false
+    this.isBusy = true
     this.health = 100
     this.playerNumber = playerNumber
     this.lastPressedKey = ''

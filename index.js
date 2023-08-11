@@ -31,11 +31,18 @@ const bgMusic = new Sound(
 )
 
 const rematchUI = document.querySelector('.rematch')
-const rematchButton = document.querySelector('.rematchButton')
+const rematchButton = document.querySelector('#rematchButton')
 const muteButton = document.querySelector('.muteButton')
+const startUI = document.querySelector('.startGame')
+const startButton = document.querySelector('#startButton')
 
 rematchButton.addEventListener('click', () => {
   rematchUI.style.display = 'none'
+  startNewGame()
+})
+
+startButton.addEventListener('click', () => {
+  startUI.style.display = 'none'
   startNewGame()
 })
 
@@ -246,9 +253,13 @@ function checkWin () {
 
 function rematch () {
   rematchUI.style.display = 'flex'
+  player.isBusy = true
+  player2.isBusy = true
 }
 
 function startNewGame () {
+  player.isBusy = false
+  player2.isBusy = false
   player.health = 100
   player2.health = 100
   player.position.x = player1SpawnPosition
